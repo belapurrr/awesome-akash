@@ -1,0 +1,52 @@
+---
+version: "2.0"
+services:
+  web:
+    image: ghcr.io/celestiaorg/celestia-node:v0.14.1
+    env:
+      - NETWORK=celestia
+      - NODE_TYPE=light
+      - RPC_URL=rpc.celestia.pops.one
+    expose:
+      - port: 9090
+        as: 9090
+        to:
+          - global: true
+      - port: 26657
+        as: 26657
+        to:
+          - global: true
+      - port: 26658
+        as: 26658
+        to:
+          - global: true
+      - port: 2121
+        as: 2121
+        to:
+          - global: true
+    command:
+      - bash
+      - "-c"
+    args:
+      - celestia $NODE_TYPE init && celestia $NODE_TYPE start --core.ip $RPC_URL --p2p.network $NETWORK --rpc.addr 0.0.0.0 --rpc.skip-auth
+profiles:
+  compute:
+    web:
+      resources:
+        cpu:
+          units: 2
+        memory:
+          size: 2GB
+        storage:
+          - size: 100GB
+  placement:
+    dcloud:
+      pricing:
+        web:
+          denom: uakt
+          amount: 1000
+deployment:
+  web:
+    dcloud:
+      profile: web
+      count: 1
