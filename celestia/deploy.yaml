@@ -4,9 +4,9 @@ services:
   web:
     image: ghcr.io/celestiaorg/celestia-node:v0.14.1
     env:
-      - NETWORK=celestia
-      - NODE_TYPE=light
-      - RPC_URL=rpc.celestia.pops.one
+      - NETWORK=celestia # celestia, mocha, arabica
+      - NODE_TYPE=light # light, bridge, full
+      - RPC_URL=rpc.celestia.pops.one # RPC endpoint for either Mainnet Beta, Mocha, or Arabica
     expose:
       - port: 9090
         as: 9090
